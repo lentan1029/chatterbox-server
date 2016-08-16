@@ -40,10 +40,10 @@ var app = {
       //   order: '-createdAt'
       // },
       success: function(data) {
-        if(!data.results || !data.results.length) { return; }
+        if (!data.results || !data.results.length) { return; }
         app.messages = data.results;
 
-        var mostRecentMessage = app.messages[0];
+        var mostRecentMessage = app.messages[app.messages.length - 1];
 
         if (mostRecentMessage.objectId !== app.lastMessageId) {
           app.lastMessageId = mostRecentMessage.objectId;
@@ -85,14 +85,14 @@ var app = {
   
     var $username = $('<span class="username" />');
     $username
-      .text(message.username + ': '+ message.createdAt)
+      .text(message.username + ': ' + message.createdAt)
       .attr('data-username', message.username)
       .appendTo($chat);
 
     var $message = $('<br><span/>');
     $message.text(message.message).appendTo($chat);
 
-    app.$chats.append($chat);
+    app.$chats.prepend($chat);
 
     if (app.friends[message.username] === true) {
       $username.addClass('friend');
@@ -134,7 +134,7 @@ var app = {
     if (messages) {
       messages.forEach(function(message) {
         var roomname = message.roomname;
-        if(roomname && !rooms[roomname]) {
+        if (roomname && !rooms[roomname]) {
           app.renderRoom(roomname);
 
           rooms[roomname] = true;
